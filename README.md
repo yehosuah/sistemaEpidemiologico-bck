@@ -4,21 +4,30 @@ FastAPI backend scaffold for manager auth and public screen availability managem
 
 ## Stack
 
-- Python 3.11+
+- Python 3.11-3.13
 - FastAPI REST API
 - PostgreSQL
 - SQLAlchemy 2
 - Alembic migrations
 - JWT bearer auth plus secure HTTP-only cookies
-- Docker Compose for local development
 
 ## Local Run
 
-Create `.env` from `.env.example`, then run:
+Create `.env` from `.env.example` and make sure PostgreSQL is running locally with the
+database URL configured in that file.
 
 ```bash
-docker compose up --build
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+alembic upgrade head
+uvicorn main:app --reload
 ```
+
+The API runs at `http://127.0.0.1:8000`.
+
+This repo currently targets Python 3.11 through 3.13. If `python3 --version`
+prints Python 3.14, use a Python 3.12 or 3.13 interpreter when creating `.venv`.
 
 API:
 
@@ -60,9 +69,6 @@ python scripts/create_manager.py
 ## Tests
 
 ```bash
-python -m pytest
+pip install -r requirements-dev.txt
+pytest
 ```
-
-## AWS
-
-Deployment target is ECS Fargate with RDS PostgreSQL. See `docs/aws-ecs-fargate.md`.
